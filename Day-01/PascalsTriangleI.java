@@ -1,15 +1,27 @@
+import java.util.*;
+
 class Solution {
 
-    public int pascalTriangleI(int r, int c) {
+    public List<List<Integer>> generate(int numRows) {
 
-        int n = r - 1;
-        int k = c - 1;
-        long value = 1;
+        List<List<Integer>> triangle = new ArrayList<>();
 
-        for (int i = 1; i <= k; i++) {
-            value = value * (n - i + 1) / i;
+        for (int row = 0; row < numRows; row++) {
+
+            List<Integer> current = new ArrayList<>();
+
+            long value = 1;
+
+            for (int col = 0; col <= row; col++) {
+
+                current.add((int) value);
+
+                value = value * (row - col) / (col + 1);
+            }
+
+            triangle.add(current);
         }
 
-        return (int) value;
+        return triangle;
     }
 }
