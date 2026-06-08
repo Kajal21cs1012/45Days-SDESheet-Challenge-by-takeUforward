@@ -1,0 +1,21 @@
+import java.util.HashMap;
+
+class Solution {
+    public int subarraysWithXorK(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int xorSum = 0;
+        int count = 0;
+
+        map.put(0, 1);
+        
+        for (int num : nums) {
+            xorSum ^= num;
+            int target = xorSum ^ k;
+            if (map.containsKey(target)) {
+                count += map.get(target);
+            }
+            map.put(xorSum, map.getOrDefault(xorSum, 0) + 1);
+        }
+        return count;
+    }
+}
