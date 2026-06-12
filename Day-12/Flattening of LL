@@ -1,0 +1,57 @@
+/*Definition for singly Linked List
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode child;
+
+    ListNode() {
+        val = 0;
+        next = null;
+        child = null;
+    }
+
+    ListNode(int data1) {
+        val = data1;
+        next = null;
+        child = null;
+    }
+
+    ListNode(int data1, ListNode next1, ListNode next2) {
+        val = data1;
+        next = next1;
+        child = next2;
+    }
+}
+*/
+class Solution {
+    public ListNode flattenLinkedList(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        head.next = flattenLinkedList(head.next);
+        head = mergeTwoLists(head, head.next);
+
+        return head;
+    }
+
+    private ListNode mergeTwoLists(ListNode a, ListNode b) {
+        ListNode temp = new ListNode(0);
+        ListNode res = temp;
+
+        while (a != null && b != null) {
+            if (a.val < b.val) {
+                res.child = a;
+                res = res.child;
+                a = a.child;
+            } else {
+                res.child = b;
+                res = res.child;
+                b = b.child;
+            }
+        }
+
+        if (a != null) res.child = a;
+        else res.child = b;
+
+        return temp.child;
+    }
+}
