@@ -1,0 +1,36 @@
+class Solution {
+    static class Item {
+        int value, weight;
+        double ratio;
+
+        Item(int value, int weight) {
+            this.value = value;
+            this.weight = weight;
+            this.ratio = (double) value / (double) weight;
+        }
+    }
+
+    public double fractionalKnapsack(int[] val, int[] wt, long cap) {
+        int n = val.length;
+        Item[] items = new Item[n];
+        for (int i = 0; i < n; i++) {
+            items[i] = new Item(val[i], wt[i]);
+        }
+
+        java.util.Arrays.sort(items, (a, b) -> Double.compare(b.ratio, a.ratio));
+
+        double totalValue = 0.0;
+        long currentCapacity = cap;
+
+        for (int i = 0; i < n; i++) {
+            if (currentCapacity >= items[i].weight) {
+                totalValue += items[i].value;
+                currentCapacity -= items[i].weight;
+            } else {
+                totalValue += items[i].ratio * (double) currentCapacity;
+                break;
+            }
+        }
+        return totalValue;
+    }
+}
