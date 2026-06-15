@@ -1,0 +1,41 @@
+class Job {
+    int id, dead, profit;
+    Job(int x, int y, int z) {
+        this.id = x;
+        this.dead = y;
+        this.profit = z;
+    }
+}
+
+class Solution {
+    public int[] JobScheduling(int[][] Jobs) {
+        int n = Jobs.length;
+        Job[] arr = new Job[n];
+        for (int i = 0; i < n; i++)
+            arr[i] = new Job(Jobs[i][0], Jobs[i][1], Jobs[i][2]);
+
+        Arrays.sort(arr, (a, b) -> (b.profit - a.profit));
+
+        int maxDeadline = 0;
+        for (int i = 0; i < n; i++)
+            maxDeadline = Math.max(maxDeadline, arr[i].dead);
+
+        int[] timeline = new int[maxDeadline + 1];
+        Arrays.fill(timeline, -1);
+
+        int countJobs = 0;
+        int totalProfit = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = arr[i].dead; j > 0; j--) {
+                if (timeline[j] == -1) {
+                    timeline[j] = arr[i].id;
+                    countJobs++;
+                    totalProfit += arr[i].profit;
+                    break;
+                }
+            }
+        }
+        return new int[]{countJobs, totalProfit};
+    }
+}
