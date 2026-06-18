@@ -1,0 +1,44 @@
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> result = new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) Arrays.fill(board[i], '.');
+        
+        boolean[] colCheck = new boolean[n];
+        boolean[] diagCheck = new boolean[2 * n - 1];
+        boolean[] antiDiagCheck = new boolean[2 * n - 1];
+        
+        backtrack(0, board, result, colCheck, diagCheck, antiDiagCheck, n);
+        return result;
+    }
+
+    private void backtrack(int row, char[][] board, List<List<String>> result, 
+                           boolean[] colCheck, boolean[] diagCheck, boolean[] antiDiagCheck, int n) {
+        if (row == n) {
+            result.add(construct(board));
+            return;
+        }
+
+        for (int col = 0; col < n; col++) {
+            if (!colCheck[col] && !diagCheck[row - col + n - 1] && !antiDiagCheck[row + col]) {
+                board[row][col] = 'Q';
+                colCheck[col] = true;
+                diagCheck[row - col + n - 1] = true;
+                antiDiagCheck[row + col] = true;
+                
+                backtrack(row + 1, board, result, colCheck, diagCheck, antiDiagCheck, n);
+                
+                board[row][col] = '.';
+                colCheck[col] = false;
+                diagCheck[row - col + n - 1] = false;
+                antiDiagCheck[row + col] = false;
+            }
+        }
+    }
+
+    private List<String> construct(char[][] board) {
+        List<String> res = new ArrayList<>();
+        for (char[] row : board) res.add(new String(row));
+        return res;
+    }
+}
