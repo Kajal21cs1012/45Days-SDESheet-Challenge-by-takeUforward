@@ -1,0 +1,76 @@
+class Solution {
+    private int[] heap;
+    private int size;
+    private int capacity;
+
+    public void initializeHeap() {
+        this.heap = new int[100005];
+        this.size = 0;
+    }
+
+    public void insert(int key) {
+        heap[size] = key;
+        int current = size;
+        while (current > 0 && heap[current] > heap[(current - 1) / 2]) {
+            swap(current, (current - 1) / 2);
+            current = (current - 1) / 2;
+        }
+        size++;
+    }
+
+    public void changeKey(int index, int newVal) {
+        if (index >= size) return;
+        int oldVal = heap[index];
+        heap[index] = newVal;
+        if (newVal > oldVal) {
+            int current = index;
+            while (current > 0 && heap[current] > heap[(current - 1) / 2]) {
+                swap(current, (current - 1) / 2);
+                current = (current - 1) / 2;
+            }
+        } else {
+            heapify(index);
+        }
+    }
+
+    public int extractMax() {
+        if (size == 0) return -1;
+        int max = heap[0];
+        heap[0] = heap[size - 1];
+        size--;
+        heapify(0);
+        return max;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public int getMax() {
+        return size == 0 ? -1 : heap[0];
+    }
+
+    public int heapSize() {
+        return size;
+    }
+
+    private void heapify(int i) {
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        int largest = i;
+
+        if (left < size && heap[left] > heap[largest]) largest = left;
+        if (right < size && heap[right] > heap[largest]) largest = right;
+
+        if (largest != i) {
+            swap(i, largest);
+            heapify(largest);
+        }
+    }
+
+    private void swap(int i, int j) {
+        int temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
+    }
+}
