@@ -1,0 +1,49 @@
+class ArrayQueue {
+    private int[] arr;
+    private int start;
+    private int end;
+    private int currSize;
+    private int maxSize;
+
+    public ArrayQueue() {
+        maxSize = 1000;
+        arr = new int[maxSize];
+        start = -1;
+        end = -1;
+        currSize = 0;
+    }
+
+    public void push(int x) {
+        if (currSize == maxSize) return;
+        if (currSize == 0) {
+            start = 0;
+            end = 0;
+        } else {
+            end = (end + 1) % maxSize;
+        }
+        arr[end] = x;
+        currSize++;
+    }
+
+    public int pop() {
+        if (currSize == 0) return -1;
+        int popped = arr[start];
+        if (currSize == 1) {
+            start = -1;
+            end = -1;
+        } else {
+            start = (start + 1) % maxSize;
+        }
+        currSize--;
+        return popped;
+    }
+
+    public int peek() {
+        if (currSize == 0) return -1;
+        return arr[start];
+    }
+
+    public boolean isEmpty() {
+        return currSize == 0;
+    }
+}
