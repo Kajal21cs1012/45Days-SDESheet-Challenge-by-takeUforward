@@ -1,0 +1,39 @@
+import java.util.*;
+
+class Solution {
+    public List<Integer> search(String pat, String txt) {
+        List<Integer> result = new ArrayList<>();
+        int M = pat.length();
+        int N = txt.length();
+        if (M > N) return result;
+
+        long prime = 101; 
+        long d = 256; 
+        long h = 1;
+        long p = 0; 
+        long t = 0; 
+
+        for (int i = 0; i < M - 1; i++) {
+            h = (h * d) % prime;
+        }
+
+        for (int i = 0; i < M; i++) {
+            p = (d * p + pat.charAt(i)) % prime;
+            t = (d * t + txt.charAt(i)) % prime;
+        }
+
+        for (int i = 0; i <= N - M; i++) {
+            if (p == t) {
+                if (txt.substring(i, i + M).equals(pat)) {
+                    result.add(i);
+                }
+            }
+
+            if (i < N - M) {
+                t = (d * (t - txt.charAt(i) * h) + txt.charAt(i + M)) % prime;
+                if (t < 0) t = (t + prime);
+            }
+        }
+        return result;
+    }
+}
