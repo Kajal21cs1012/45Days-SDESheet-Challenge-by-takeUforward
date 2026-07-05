@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int data;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int val) { data = val; left = null, right = null }
+ * }
+ **/
+class Solution {
+    private static class NodeInfo {
+        TreeNode node;
+        int row, col;
+
+        NodeInfo(TreeNode node, int row, int col) {
+            this.node = node;
+            this.row = row;
+            this.col = col;
+        }
+    }
+
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        TreeMap<Integer, TreeMap<Integer, PriorityQueue<Integer>>> map = new TreeMap<>();
+        Queue<NodeInfo> queue = new LinkedList<>();
+
+        if (root == null) return new ArrayList<>();
+
+        queue.add(new NodeInfo(root, 0, 0));
+
+        while (!queue.isEmpty()) {
+            NodeInfo current = queue.poll();
+            TreeNode node = current.node;
+            int r = current.row;
+            int c = current.col;
+
+            map.putIfAbsent(c, new TreeMap<>());
+            map.get(c).putIfAbsent(r, new PriorityQueue<>());
+            map.get(c).get(r).add(node.data);
+
+            if (node.left != null) {
+                queue.add(new NodeInfo(node.left, r + 1, c - 1));
+            }
+            if (node.right != null) {
+                queue.add(new NodeInfo(node.right, r + 1, c + 1));
+            }
+        }
+
+        List<List<Integer>> result = new ArrayList<>();
+        for (TreeMap<Integer, PriorityQueue<Integer>> colMap : map.values()) {
+            List<Integer> colList = new ArrayList<>();
+            for (PriorityQueue<Integer> rowQueue : colMap.values()) {
+                while (!rowQueue.isEmpty()) {
+                    colList.add(rowQueue.poll());
+                }
+            }
+            result.add(colList);
+        }
+        return result;
+    }
+}
