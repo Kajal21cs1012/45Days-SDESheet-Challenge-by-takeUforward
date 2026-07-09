@@ -1,0 +1,25 @@
+// class TreeNode {
+//     int val;
+//     TreeNode left, right;
+//     TreeNode(int x) { val = x; }
+// }
+
+class Solution {
+    public boolean checkChildrenSum(TreeNode root) {
+        if (root == null || (root.left == null && root.right == null)) {
+            return true;
+        }
+
+        int sum = 0;
+        if (root.left != null) {
+            sum += root.left.val;
+        }
+        if (root.right != null) {
+            sum += root.right.val;
+        }
+
+        return (root.val == sum) 
+            && checkChildrenSum(root.left) 
+            && checkChildrenSum(root.right);
+    }
+}
