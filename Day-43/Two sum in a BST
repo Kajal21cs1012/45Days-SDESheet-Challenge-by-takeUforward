@@ -1,0 +1,27 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int data;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int val) { data = val; left = null, right = null }
+ * }
+ **/
+
+class Solution {
+    public boolean twoSumBST(TreeNode root, int k) {
+        Set<Integer> set = new HashSet<>();
+        return dfs(root, k, set);
+    }
+
+    private boolean dfs(TreeNode node, int k, Set<Integer> set) {
+        if (node == null) {
+            return false;
+        }
+        if (set.contains(k - node.data)) {
+            return true;
+        }
+        set.add(node.data);
+        return dfs(node.left, k, set) || dfs(node.right, k, set);
+    }
+}
