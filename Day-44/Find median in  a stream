@@ -1,0 +1,23 @@
+class Solution {
+    public List<Double> getMedian(int[] arr) {
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        List<Double> result = new ArrayList<>();
+
+        for (int num : arr) {
+            maxHeap.offer(num);
+            minHeap.offer(maxHeap.poll());
+
+            if (maxHeap.size() < minHeap.size()) {
+                maxHeap.offer(minHeap.poll());
+            }
+
+            if (maxHeap.size() > minHeap.size()) {
+                result.add((double) maxHeap.peek());
+            } else {
+                result.add((maxHeap.peek() + minHeap.peek()) / 2.0);
+            }
+        }
+        return result;
+    }
+}
